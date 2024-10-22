@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package api.chat_service;
+
+import "api/chat_service/messages.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/pkg/api/chat_service;chat_service";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Chat Service"
+    version: "1.0"
+    contact: {
+      name: "gRPC-Gateway project"
+      url: "https://github.com/grpc-ecosystem/grpc-gateway"
+      email: "none@example.com"
+    }
+    license: {
+      name: "BSD 3-Clause License"
+      url: "https://github.com/grpc-ecosystem/grpc-gateway/blob/main/LICENSE"
+    }
+  }
+  external_docs: {
+    url: "https://github.com/grpc-ecosystem/grpc-gateway"
+    description: "More about gRPC-Gateway"
+  }
+  schemes: HTTP
+  schemes: HTTPS
+};
+
+// ChatService - серивис отвечающий за чаты
+service ChatService {
+  //Healthz - liveness-проба Kubernetes
+  rpc Healthz(HealthzRequest) returns (HealthzResponse) {
+    option (google.api.http) = {get: "/api/v1/chat/healthz"};
+  }
+  //Readyz - liveness-проба Kubernetes
+  rpc Readyz(ReadyzRequest) returns (ReadyzResponse) {
+    option (google.api.http) = {get: "/api/v1/chat/readyz"};
+  }
+  //WriteFriend - Написать сообщение другу
+  rpc WriteFriend(WriteFriendRequest) returns (WriteFriendResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/chat/write_friend"
+      body: "*"
+    };
+  }
+  //GetMessageChat  - Получить сообщение из чата с пользователем
+  rpc GetMessageChat(GetMessageChatRequest) returns (GetMessageChatResponse) {
+    option (google.api.http) = {get: "/api/v1/chat/get_message_chat"};
+  }
+  //GetListChat - получить список чатов пользователя
+  //  rpc GetListChat(GetListChatRequest) returns (GetListChatResponse) {
+  //    option (google.api.http) = {
+  //      post: "/api/v1/chat/get_list_chat"
+  //      body: "*"
+  //    };
+  //  }
+}

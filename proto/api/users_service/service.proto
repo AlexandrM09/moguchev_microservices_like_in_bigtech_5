@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package api.users_service;
+
+import "api/users_service/messages.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/pkg/api/users_service;users_service";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Users Service"
+    version: "1.0"
+    contact: {
+      name: "gRPC-Gateway project"
+      url: "https://github.com/grpc-ecosystem/grpc-gateway"
+      email: "none@example.com"
+    }
+    license: {
+      name: "BSD 3-Clause License"
+      url: "https://github.com/grpc-ecosystem/grpc-gateway/blob/main/LICENSE"
+    }
+  }
+  external_docs: {
+    url: "https://github.com/grpc-ecosystem/grpc-gateway"
+    description: "More about gRPC-Gateway"
+  }
+  schemes: HTTP
+  schemes: HTTPS
+};
+
+// UsersService - сервис отвечающий за работу с пользователями
+service UsersService {
+  //Healthz - liveness-проба Kubernetes
+  rpc Healthz(HealthzRequest) returns (HealthzResponse) {
+    option (google.api.http) = {get: "/api/v1/users/healthz"};
+  }
+  //Readyz - liveness-проба Kubernetes
+  rpc Readyz(ReadyzRequest) returns (ReadyzResponse) {
+    option (google.api.http) = {get: "/api/v1/users/readyz"};
+  }
+  //SignUpUser - регистрация пользователя (по почте и паролю)
+  rpc SignUpUserEmail(SignUpUserEmailRequest) returns (SignUpUserEmailResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/users/register"
+      body: "*"
+    };
+  }
+  //SignInUser - вход/авторизация (по почте и паролю)
+  rpc SignInUserEmail(SignInUserPostRequest) returns (SignInUserPostResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/users/login_email"
+      body: "*"
+    };
+  }
+  //SignInUserOauth - вход/авторизация (Oauth), регистрация если нет такого пользователя
+  rpc SignInUserOauth(SignInUserOauthRequest) returns (SignInUserOauthResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/users/login_oauth"
+      body: "*"
+    };
+  }
+  //UpdateProfile - редактирование профиля пользователя (никнейм - уникальный, информация о себе, аватарка)
+  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/users/update_profile"
+      body: "*"
+    };
+  }
+  //SearchByNickname- поиск пользователей по никнейму
+  rpc SearchByNickname(SearchByNicknameRequest) returns (SearchByNicknameResponse) {
+    option (google.api.http) = {get: "/api/v1/users/search_by_nickname"};
+  }
+}
