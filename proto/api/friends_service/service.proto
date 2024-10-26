@@ -40,14 +40,14 @@ service FriendsService {
     option (google.api.http) = {get: "/api/v1/friends/readyz"};
   }
   //Add - Добавить пользователя в друзья
-  rpc Add(AddFriendRequest) returns (AddFriendResponse) {
+  rpc Add(AddRequest) returns (AddResponse) {
     option (google.api.http) = {
       post: "/api/v1/friends/add_friend"
       body: "*"
     };
   }
   //Remove - убрать пользователя из друзей
-  rpc Remove(RemoveFriendRequest) returns (RemoveFriendResponse) {
+  rpc Remove(RemoveRequest) returns (RemoveResponse) {
     option (google.api.http) = {
       post: "/api/v1/friends/remove_friend"
       body: "*"

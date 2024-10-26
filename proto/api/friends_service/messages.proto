@@ -22,20 +22,66 @@ message ReadyzRequest {}
 message ReadyzResponse {}
 
 //AddFriendRequest - запрос на добавить пользователя в друзья
-message AddFriendRequest {
+message AddRequest {
   //никнейм - уникальный
   string Nickname = 1 [
     json_name = "nick_name",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+  //никнейм друга - уникальный
+  string NicknameFriend = 2 [
+    json_name = "nick_name_friend",
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).string.min_len = 5
   ];
 }
 
 //AddFriendResponse - ответ
-message AddFriendResponse {}
+message AddResponse {}
 
 //RemoveFriendRequest -запрос убрать пользователя из друзей
-message RemoveFriendRequest {
+message RemoveRequest {
+  //никнейм - уникальный
+  string Nickname = 1 [
+    json_name = "nick_name",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+  //никнейм друга - уникальный
+  string NicknameFriend = 2 [
+    json_name = "nick_name_friend",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+}
+
+//RemoveFriendResponse - ответ
+message RemoveResponse {}
+
+//ConfirmRequest -запрос подтвердить или отклонить запрос на дружбу
+message ConfirmRequest {
+  //никнейм - уникальный
+  string Nickname = 1 [
+    json_name = "nick_name",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+  //никнейм друга - уникальный
+  string NicknameFriend = 2 [
+    json_name = "nick_name_friend",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+  //true - подтвердить, false - отклонить
+  bool Confirm = 3;
+}
+
+//ConfirmResponse - ответ
+message ConfirmResponse {}
+
+//GetListRequest - запрос на просмотр списка своих друзей (подтвердивших и не подтвердивших еще)
+message GetListRequest {
   //никнейм - уникальный
   string Nickname = 1 [
     json_name = "nick_name",
@@ -43,21 +89,6 @@ message RemoveFriendRequest {
     (buf.validate.field).string.min_len = 5
   ];
 }
-
-//RemoveFriendResponse - ответ
-message RemoveFriendResponse {}
-
-//ConfirmRequest -запрос подтвердить или отклонить запрос на дружбу
-message ConfirmRequest {
-  //true - подтвердить, false - отклонить
-  bool Confirm = 1;
-}
-
-//ConfirmResponse - ответ
-message ConfirmResponse {}
-
-//GetListRequest - запрос на просмотр списка своих друзей (подтвердивших и не подтвердивших еще)
-message GetListRequest {}
 
 //GetListResponse ответ просмотр списка своих друзей (подтвердивших и не подтвердивших еще)
 message GetListResponse {
