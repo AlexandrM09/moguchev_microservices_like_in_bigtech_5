@@ -44,13 +44,12 @@ message SignUpUserEmailRequest {
     (buf.validate.field).string.min_len = 4
   ];
   string Password = 5 [
-    json_name = "password_hash",
+    json_name = "password",
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).string.min_len = 8
   ];
   //Role  string
   //Verified  bool
-  //string Provider = 7
 }
 
 //Ответ регистрации
@@ -58,8 +57,22 @@ message SignUpUserEmailResponse {}
 
 //SignInUserPostRequest - вход/авторизация (по почте и паролю)
 message SignInUserPostRequest {
-  string email = 1;
-  string password = 2;
+  //никнейм - уникальный
+  string Nickname = 1 [
+    json_name = "nick_name",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+  string Email = 2[
+    json_name = "email",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 4
+  ];
+  string Password = 3[
+    json_name = "password",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 8
+  ];
 }
 
 //SignInUserPostResponse
@@ -72,8 +85,16 @@ message SignInUserPostResponse {
 
 //SignInUserOauthRequest - вход/авторизация (Oauth)
 message SignInUserOauthRequest {
-  string code = 1;
-  string state = 2;
+  string Code = 1[
+    json_name = "code",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1
+  ];
+  string State = 2[
+    json_name = "state",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1
+  ];
 }
 
 //SignInUserOauthResponse
@@ -115,8 +136,8 @@ message SearchByNicknameRequest {
 //ответ SearchByNickname- поиск пользователей по никнейму
 message SearchByNicknameResponse {
   //Id пользователя
-  string user_id = 1 [
-    json_name = "order_id",
+  string Userid = 1 [
+    json_name = "user_id",
     (google.api.field_behavior) = OUTPUT_ONLY,
     (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
       pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
@@ -142,27 +163,26 @@ message SearchByNicknameResponse {
     (google.api.field_behavior) = OUTPUT_ONLY
     //(google.api.field_behavior) = REQUIRED
   ];
-
+  //Email
   string Email = 5 [
     json_name = "email",
     (google.api.field_behavior) = OUTPUT_ONLY,
     (buf.validate.field).string.min_len = 4
   ];
-  string PasswordHash = 6 [
-    json_name = "password_hash",
-    (google.api.field_behavior) = OUTPUT_ONLY
-  ];
   //Role  string
   //Verified  bool
-  string Provider = 7 [
+  //Provider
+  string Provider = 6 [
     json_name = "provider",
     (google.api.field_behavior) = OUTPUT_ONLY
   ];
-  google.protobuf.Timestamp CreatedAt = 8 [
+  //
+  google.protobuf.Timestamp CreatedAt = 7 [
     json_name = "created_at",
     (google.api.field_behavior) = OUTPUT_ONLY
   ];
-  google.protobuf.Timestamp UpdatedAt = 9 [
+  //
+  google.protobuf.Timestamp UpdatedAt = 8 [
     json_name = "updated_at",
     (google.api.field_behavior) = OUTPUT_ONLY
   ];

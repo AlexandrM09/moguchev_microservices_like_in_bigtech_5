@@ -5,6 +5,8 @@ package models
 type AddRequest struct{
 	//никнейм - уникальный
 	Nickname string
+  //никнейм друга - уникальный
+  NicknameFriend string
   }
   
   //AddFriendResponse - ответ
@@ -12,8 +14,10 @@ type AddResponse struct{}
   
   //RemoveFriendRequest -запрос убрать пользователя из друзей
   type RemoveRequest struct{
-	//никнейм - уникальный
+  //никнейм - уникальный
 	Nickname string
+  //никнейм друга - уникальный
+  NicknameFriend string
   }
   
   //RemoveFriendResponse - ответ
@@ -21,6 +25,10 @@ type AddResponse struct{}
   
   //ConfirmRequest -запрос подтвердить или отклонить запрос на дружбу
   type ConfirmRequest struct{
+    //никнейм - уникальный
+	Nickname string
+  //никнейм друга - уникальный
+  NicknameFriend string
 	//true - подтвердить, false - отклонить
 	Confirm bool
   }
@@ -29,7 +37,10 @@ type AddResponse struct{}
   type ConfirmResponse struct{}
   
   //GetListRequest - запрос на просмотр списка своих друзей (подтвердивших и не подтвердивших еще)
-  type GetListRequest struct{}
+  type GetListRequest struct{
+    //никнейм - уникальный
+	Nickname string
+  }
   
   //GetListResponse ответ просмотр списка своих друзей (подтвердивших и не подтвердивших еще)
   type GetListResponse struct{

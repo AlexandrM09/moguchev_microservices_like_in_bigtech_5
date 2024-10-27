@@ -10,6 +10,10 @@ import (
 
 
 func (uc *usecase) GetMessageChat(ctx context.Context, req models.GetMessageChatRequest) (*models.GetMessageChatResponse, error){
+		//Проверка существования ника запрашивающего
+		if  err:=uc.Users.Check(ctx,req.Nickname);err!=nil{
+			return nil, models.ErrNotFoundNickname
+		}
 		//Проверка существования друга
 		if  err:=uc.Users.Check(ctx,req.NicknameFriend);err!=nil{
 			return nil, models.ErrNotFoundFriend

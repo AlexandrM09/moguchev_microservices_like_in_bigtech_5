@@ -169,7 +169,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/friends_serviceAddFriendResponse"
+              "$ref": "#/definitions/friends_serviceAddResponse"
             }
           },
           "default": {
@@ -185,7 +185,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/friends_serviceAddFriendRequest"
+              "$ref": "#/definitions/friends_serviceAddRequest"
             }
           }
         ],
@@ -245,6 +245,15 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "nick_name",
+            "description": "никнейм - уникальный",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "tags": [
           "FriendsService"
         ]
@@ -304,7 +313,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/friends_serviceRemoveFriendResponse"
+              "$ref": "#/definitions/friends_serviceRemoveResponse"
             }
           },
           "default": {
@@ -320,7 +329,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/friends_serviceRemoveFriendRequest"
+              "$ref": "#/definitions/friends_serviceRemoveRequest"
             }
           }
         ],
@@ -643,32 +652,49 @@
       },
       "title": "WriteFriendResponse - ответ"
     },
-    "friends_serviceAddFriendRequest": {
+    "friends_serviceAddRequest": {
       "type": "object",
       "properties": {
         "nick_name": {
           "type": "string",
           "title": "никнейм - уникальный"
+        },
+        "nick_name_friend": {
+          "type": "string",
+          "title": "никнейм друга - уникальный"
         }
       },
       "title": "AddFriendRequest - запрос на добавить пользователя в друзья",
       "required": [
-        "nick_name"
+        "nick_name",
+        "nick_name_friend"
       ]
     },
-    "friends_serviceAddFriendResponse": {
+    "friends_serviceAddResponse": {
       "type": "object",
       "title": "AddFriendResponse - ответ"
     },
     "friends_serviceConfirmRequest": {
       "type": "object",
       "properties": {
+        "nick_name": {
+          "type": "string",
+          "title": "никнейм - уникальный"
+        },
+        "nick_name_friend": {
+          "type": "string",
+          "title": "никнейм друга - уникальный"
+        },
         "Confirm": {
           "type": "boolean",
           "title": "true - подтвердить, false - отклонить"
         }
       },
-      "title": "ConfirmRequest -запрос подтвердить или отклонить запрос на дружбу"
+      "title": "ConfirmRequest -запрос подтвердить или отклонить запрос на дружбу",
+      "required": [
+        "nick_name",
+        "nick_name_friend"
+      ]
     },
     "friends_serviceConfirmResponse": {
       "type": "object",
@@ -696,20 +722,25 @@
       },
       "title": "GetListResponse ответ просмотр списка своих друзей (подтвердивших и не подтвердивших еще)"
     },
-    "friends_serviceRemoveFriendRequest": {
+    "friends_serviceRemoveRequest": {
       "type": "object",
       "properties": {
         "nick_name": {
           "type": "string",
           "title": "никнейм - уникальный"
+        },
+        "nick_name_friend": {
+          "type": "string",
+          "title": "никнейм друга - уникальный"
         }
       },
       "title": "RemoveFriendRequest -запрос убрать пользователя из друзей",
       "required": [
-        "nick_name"
+        "nick_name",
+        "nick_name_friend"
       ]
     },
-    "friends_serviceRemoveFriendResponse": {
+    "friends_serviceRemoveResponse": {
       "type": "object",
       "title": "RemoveFriendResponse - ответ"
     },

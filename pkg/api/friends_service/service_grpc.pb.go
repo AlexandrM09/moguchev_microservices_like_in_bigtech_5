@@ -38,9 +38,9 @@ type FriendsServiceClient interface {
 	// Readyz - liveness-проба Kubernetes
 	Readyz(ctx context.Context, in *ReadyzRequest, opts ...grpc.CallOption) (*ReadyzResponse, error)
 	// Add - Добавить пользователя в друзья
-	Add(ctx context.Context, in *AddFriendRequest, opts ...grpc.CallOption) (*AddFriendResponse, error)
+	Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error)
 	// Remove - убрать пользователя из друзей
-	Remove(ctx context.Context, in *RemoveFriendRequest, opts ...grpc.CallOption) (*RemoveFriendResponse, error)
+	Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*RemoveResponse, error)
 	// Confirm - Подтвердить или отклонить запрос на дружбу
 	Confirm(ctx context.Context, in *ConfirmRequest, opts ...grpc.CallOption) (*ConfirmResponse, error)
 	// GetList - Просмотр списка своих друзей (подтвердивших и не подтвердивших еще)
@@ -75,9 +75,9 @@ func (c *friendsServiceClient) Readyz(ctx context.Context, in *ReadyzRequest, op
 	return out, nil
 }
 
-func (c *friendsServiceClient) Add(ctx context.Context, in *AddFriendRequest, opts ...grpc.CallOption) (*AddFriendResponse, error) {
+func (c *friendsServiceClient) Add(ctx context.Context, in *AddRequest, opts ...grpc.CallOption) (*AddResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(AddFriendResponse)
+	out := new(AddResponse)
 	err := c.cc.Invoke(ctx, FriendsService_Add_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -85,9 +85,9 @@ func (c *friendsServiceClient) Add(ctx context.Context, in *AddFriendRequest, op
 	return out, nil
 }
 
-func (c *friendsServiceClient) Remove(ctx context.Context, in *RemoveFriendRequest, opts ...grpc.CallOption) (*RemoveFriendResponse, error) {
+func (c *friendsServiceClient) Remove(ctx context.Context, in *RemoveRequest, opts ...grpc.CallOption) (*RemoveResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(RemoveFriendResponse)
+	out := new(RemoveResponse)
 	err := c.cc.Invoke(ctx, FriendsService_Remove_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -126,9 +126,9 @@ type FriendsServiceServer interface {
 	// Readyz - liveness-проба Kubernetes
 	Readyz(context.Context, *ReadyzRequest) (*ReadyzResponse, error)
 	// Add - Добавить пользователя в друзья
-	Add(context.Context, *AddFriendRequest) (*AddFriendResponse, error)
+	Add(context.Context, *AddRequest) (*AddResponse, error)
 	// Remove - убрать пользователя из друзей
-	Remove(context.Context, *RemoveFriendRequest) (*RemoveFriendResponse, error)
+	Remove(context.Context, *RemoveRequest) (*RemoveResponse, error)
 	// Confirm - Подтвердить или отклонить запрос на дружбу
 	Confirm(context.Context, *ConfirmRequest) (*ConfirmResponse, error)
 	// GetList - Просмотр списка своих друзей (подтвердивших и не подтвердивших еще)
@@ -149,10 +149,10 @@ func (UnimplementedFriendsServiceServer) Healthz(context.Context, *HealthzReques
 func (UnimplementedFriendsServiceServer) Readyz(context.Context, *ReadyzRequest) (*ReadyzResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Readyz not implemented")
 }
-func (UnimplementedFriendsServiceServer) Add(context.Context, *AddFriendRequest) (*AddFriendResponse, error) {
+func (UnimplementedFriendsServiceServer) Add(context.Context, *AddRequest) (*AddResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Add not implemented")
 }
-func (UnimplementedFriendsServiceServer) Remove(context.Context, *RemoveFriendRequest) (*RemoveFriendResponse, error) {
+func (UnimplementedFriendsServiceServer) Remove(context.Context, *RemoveRequest) (*RemoveResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Remove not implemented")
 }
 func (UnimplementedFriendsServiceServer) Confirm(context.Context, *ConfirmRequest) (*ConfirmResponse, error) {
@@ -219,7 +219,7 @@ func _FriendsService_Readyz_Handler(srv interface{}, ctx context.Context, dec fu
 }
 
 func _FriendsService_Add_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(AddFriendRequest)
+	in := new(AddRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -231,13 +231,13 @@ func _FriendsService_Add_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: FriendsService_Add_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FriendsServiceServer).Add(ctx, req.(*AddFriendRequest))
+		return srv.(FriendsServiceServer).Add(ctx, req.(*AddRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _FriendsService_Remove_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RemoveFriendRequest)
+	in := new(RemoveRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -249,7 +249,7 @@ func _FriendsService_Remove_Handler(srv interface{}, ctx context.Context, dec fu
 		FullMethod: FriendsService_Remove_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(FriendsServiceServer).Remove(ctx, req.(*RemoveFriendRequest))
+		return srv.(FriendsServiceServer).Remove(ctx, req.(*RemoveRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
