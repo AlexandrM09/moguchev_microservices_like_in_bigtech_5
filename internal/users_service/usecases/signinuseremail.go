@@ -14,7 +14,7 @@ import (
 func (uc *usecase) SignInUserEmail(ctx context.Context, req models.SignInUserPostRequest) (*models.SignInUserPostResponse, error){
 		
 		//поиск юзера
-		res,err:=uc.UsersRepository.SearchByNickname(ctx,models.SearchByNicknameRequest{Nickname: req.Nickname});
+		res,err:=uc.UsersRepository.GetUser(ctx,models.SearchByNicknameRequest{Nickname: req.Nickname});
 		if err!=nil{
 			
 			return nil, models.ErrSignInUserEmailFailed

@@ -14,23 +14,13 @@ func (c *Controller)Readyz(ctx context.Context, req *pb.ReadyzRequest) (*pb.Read
 	return &pb.ReadyzResponse{},nil
 }
 
-//func (c *Controller) CreateOrder(ctx context.Context, req *pb.CreateOrderRequest) (*pb.CreateOrderResponse, error) {
-//	// 1. validation (in middleware)
-//
-//	// 2. convert delivery models to domain models/DTO
-//	orderInfo := newOrderFromPbCreateOrderRequest(req)
-//
-//	// 3. call usecase
-//	newOrder, err := c.OrdersUsecase.CreateOrder(ctx, orderInfo)
-//	if err != nil {
-//		return nil, err // обработается на уровне middleware
-//	}
-//
-//	// 4. convert domain models/DTO to delivery models
-//	response := &pb.CreateOrderResponse{
-//		OrderId: newOrder.ID.String(),
-//	}
-//
-//	// 5. return result
-//	return response, nil
-//}
+//WriteFriend - Написать сообщение другу
+func (c *Controller)WriteFriend(ctx context.Context,req *pb.WriteFriendRequest)(*pb.WriteFriendResponse,error){
+	
+	return &pb.WriteFriendResponse{},nil
+}
+
+//GetMessageChat  - Получить сообщение из чата с пользователем
+func (c *Controller)GetMessageChat(ctx context.Context,req *pb.GetMessageChatRequest)(*pb.GetMessageChatResponse,error){
+	return &pb.GetMessageChatResponse{},nil
+}

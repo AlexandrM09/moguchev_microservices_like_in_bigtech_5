@@ -10,12 +10,13 @@ import (
 
 
 func (uc *usecase) SignUpUserEmail(ctx context.Context, req models.SignUpUserEmailRequest) (*models.SignUpUserEmailResponse, error){
-		
+		//создаем hash
+        hash:="" 
 		//создание юзера в бд
-		res,err:=uc.UsersRepository.SignUpUserEmail(ctx,req);
+		_,err:=uc.UsersRepository.CreateUser(ctx,models.SignUpUserEmailRequest{},hash,"oauth");
 		if err!=nil{
 			//todo дополнительно проверить на ошибку ErrSignUpUserFailedUserExist 
 			return nil, models.ErrSignUpUserFailed
 		}
- return res, nil
+ return &models.SignUpUserEmailResponse{}, nil
 }

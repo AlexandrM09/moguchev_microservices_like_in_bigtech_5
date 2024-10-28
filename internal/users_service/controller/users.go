@@ -14,23 +14,27 @@ func (c *Controller) Readyz(ctx context.Context, req *pb.ReadyzRequest) (*pb.Rea
 	return &pb.ReadyzResponse{}, nil
 }
 
-//func (c *Controller) CreateOrder(ctx context.Context, req *pb.CreateOrderRequest) (*pb.CreateOrderResponse, error) {
-//	// 1. validation (in middleware)
-//
-//	// 2. convert delivery models to domain models/DTO
-//	orderInfo := newOrderFromPbCreateOrderRequest(req)
-//
-//	// 3. call usecase
-//	newOrder, err := c.OrdersUsecase.CreateOrder(ctx, orderInfo)
-//	if err != nil {
-//		return nil, err // обработается на уровне middleware
-//	}
-//
-//	// 4. convert domain models/DTO to delivery models
-//	response := &pb.CreateOrderResponse{
-//		OrderId: newOrder.ID.String(),
-//	}
-//
-//	// 5. return result
-//	return response, nil
-//}
+//SignUpUser - регистрация пользователя (по почте и паролю)
+func (c *Controller) SignUpUserEmail(ctx context.Context, req *pb.SignUpUserEmailRequest) (*pb.SignUpUserEmailResponse, error){
+	return &pb.SignUpUserEmailResponse{},nil
+}
+
+//SignInUser - вход/авторизация (по почте и паролю)
+func (c *Controller) SignInUserEmail(ctx context.Context, req *pb.SignInUserPostRequest) (*pb.SignInUserPostResponse, error){
+	return &pb.SignInUserPostResponse{},nil
+}
+
+//SignInUserOauth - вход/авторизация (Oauth), регистрация если нет такого пользователя
+func (c *Controller) SignInUserOauth(ctx context.Context, req *pb.SignInUserOauthRequest) (*pb.SignInUserOauthResponse, error){
+	return &pb.SignInUserOauthResponse{},nil
+}
+
+//UpdateProfile - редактирование профиля пользователя (никнейм - уникальный, информация о себе, аватарка)
+func (c *Controller) UpdateProfile(ctx context.Context, req *pb.UpdateProfileRequest) (*pb.UpdateProfileResponse, error){
+	return &pb.UpdateProfileResponse{},nil
+}
+
+//SearchByNickname- поиск пользователей по никнейму
+func (c *Controller) SearchByNickname(ctx context.Context, req *pb.SearchByNicknameRequest) (*pb.SearchByNicknameResponse, error){
+	return &pb.SearchByNicknameResponse{},nil
+}

@@ -4,8 +4,7 @@ import (
 	"context"
 
 	"github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/internal/chat_service/models"
-	//orders_models "lesson_08/orders_management_system/internal/app/usecases/orders/models"
-	//"lesson_08/orders_management_system/pkg/pagination"
+	
 )
 
 // Usecase - port (первичный)
