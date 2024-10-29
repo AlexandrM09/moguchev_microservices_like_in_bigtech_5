@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+package api.friends_service;
+
+import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/pkg/api/friends_service;friends_service";
+
+//HealthzRequest
+message HealthzRequest {}
+
+//HealthzResponse
+message HealthzResponse {}
+
+//ReadyzRequest
+message ReadyzRequest {}
+
+//ReadyzResponse
+message ReadyzResponse {}
+
+//AddFriendRequest - запрос на добавить пользователя в друзья
+message AddFriendRequest {
+  //никнейм - уникальный
+  string Nickname = 1 [
+    json_name = "nick_name",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+}
+
+//AddFriendResponse - ответ
+message AddFriendResponse {}
+
+//RemoveFriendRequest -запрос убрать пользователя из друзей
+message RemoveFriendRequest {
+  //никнейм - уникальный
+  string Nickname = 1 [
+    json_name = "nick_name",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+}
+
+//RemoveFriendResponse - ответ
+message RemoveFriendResponse {}
+
+//ConfirmRequest -запрос подтвердить или отклонить запрос на дружбу
+message ConfirmRequest {
+  //true - подтвердить, false - отклонить
+  bool Confirm = 1;
+}
+
+//ConfirmResponse - ответ
+message ConfirmResponse {}
+
+//GetListRequest - запрос на просмотр списка своих друзей (подтвердивших и не подтвердивших еще)
+message GetListRequest {}
+
+//GetListResponse ответ просмотр списка своих друзей (подтвердивших и не подтвердивших еще)
+message GetListResponse {
+  //список подтвердивших
+  repeated string Confirmed = 1 [
+    json_name = "confirmed",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+  //список не подтвердивших
+  repeated string NotConfirmed = 2 [
+    json_name = "not_confirmed",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}

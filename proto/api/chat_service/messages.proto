@@ -1,0 +1,107 @@
+syntax = "proto3";
+
+package api.chat_service;
+
+import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/pkg/api/chat_service;chat_service";
+
+//HealthzRequest
+message HealthzRequest {}
+
+//HealthzResponse
+message HealthzResponse {}
+
+//ReadyzRequest
+message ReadyzRequest {}
+
+//ReadyzResponse
+message ReadyzResponse {}
+
+//WriteFriendRequest - запрос написать сообщение другу
+message WriteFriendRequest {
+  //никнейм - уникальный
+  string Nickname = 1 [
+    json_name = "nick_name",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+  //никнейм друга - уникальный
+  string NicknameFriend = 2 [
+    json_name = "nick_name_friend",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+  //сообщение
+  string Message = 3 [
+    json_name = "message",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 1
+  ];
+}
+
+//WriteFriendResponse - ответ
+message WriteFriendResponse {
+  //номер сообщения
+  uint64 Position = 1 [
+    json_name = "position",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}
+
+//GetMessageChatRequest  - Получить сообщение из чата с пользователем
+message GetMessageChatRequest {
+  //никнейм - уникальный
+  string Nickname = 1 [
+    json_name = "nick_name",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+  //никнейм друга - уникальный
+  string NicknameFriend = 2 [
+    json_name = "nick_name_friend",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+  //последняя прочитанная позиция
+  uint64 LastPosition = 3 [
+    json_name = "last_position",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).uint64.gt = 0
+  ];
+}
+
+//Сообщение в чате
+message OneMessages {
+  string Nickname = 1 [
+    json_name = "nick_name",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+  string Message = 2 [
+    json_name = "message",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+  //номер последнего сообщения
+  uint64 Position = 3 [
+    json_name = "position",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+  //Время сообщения
+  google.protobuf.Timestamp CreatedAt = 4 [
+    json_name = "created_at",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}
+
+//GetMessageChatResponse -ответ cписок сообщений
+message GetMessageChatResponse {
+  //Список сообщений
+  repeated OneMessages Messages = 1 [
+    json_name = "messages",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}

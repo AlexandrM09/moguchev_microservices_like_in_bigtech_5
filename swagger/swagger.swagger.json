@@ -1,0 +1,906 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Chat Service",
+    "version": "1.0",
+    "contact": {
+      "name": "gRPC-Gateway project",
+      "url": "https://github.com/grpc-ecosystem/grpc-gateway",
+      "email": "none@example.com"
+    },
+    "license": {
+      "name": "BSD 3-Clause License",
+      "url": "https://github.com/grpc-ecosystem/grpc-gateway/blob/main/LICENSE"
+    }
+  },
+  "tags": [
+    {
+      "name": "ChatService"
+    },
+    {
+      "name": "FriendsService"
+    },
+    {
+      "name": "UsersService"
+    }
+  ],
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/api/v1/chat/get_message_chat": {
+      "get": {
+        "summary": "GetMessageChat  - Получить сообщение из чата с пользователем",
+        "operationId": "ChatService_GetMessageChat",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/chat_serviceGetMessageChatResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "nick_name",
+            "description": "никнейм - уникальный",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "nick_name_friend",
+            "description": "никнейм друга - уникальный",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "last_position",
+            "description": "последняя прочитанная позиция",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "format": "uint64"
+          }
+        ],
+        "tags": [
+          "ChatService"
+        ]
+      }
+    },
+    "/api/v1/chat/healthz": {
+      "get": {
+        "summary": "Healthz - liveness-проба Kubernetes",
+        "operationId": "ChatService_Healthz",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apichat_serviceHealthzResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "ChatService"
+        ]
+      }
+    },
+    "/api/v1/chat/readyz": {
+      "get": {
+        "summary": "Readyz - liveness-проба Kubernetes",
+        "operationId": "ChatService_Readyz",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apichat_serviceReadyzResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "ChatService"
+        ]
+      }
+    },
+    "/api/v1/chat/write_friend": {
+      "post": {
+        "summary": "WriteFriend - Написать сообщение другу",
+        "operationId": "ChatService_WriteFriend",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/chat_serviceWriteFriendResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/chat_serviceWriteFriendRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ChatService"
+        ]
+      }
+    },
+    "/api/v1/friends/add_friend": {
+      "post": {
+        "summary": "Add - Добавить пользователя в друзья",
+        "operationId": "FriendsService_Add",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/friends_serviceAddFriendResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/friends_serviceAddFriendRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FriendsService"
+        ]
+      }
+    },
+    "/api/v1/friends/confirm": {
+      "post": {
+        "summary": "Confirm - Подтвердить или отклонить запрос на дружбу",
+        "operationId": "FriendsService_Confirm",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/friends_serviceConfirmResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/friends_serviceConfirmRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FriendsService"
+        ]
+      }
+    },
+    "/api/v1/friends/get_list": {
+      "get": {
+        "summary": "GetList - Просмотр списка своих друзей (подтвердивших и не подтвердивших еще)",
+        "operationId": "FriendsService_GetList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/friends_serviceGetListResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "FriendsService"
+        ]
+      }
+    },
+    "/api/v1/friends/healthz": {
+      "get": {
+        "summary": "Healthz - liveness-проба Kubernetes",
+        "operationId": "FriendsService_Healthz",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apifriends_serviceHealthzResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "FriendsService"
+        ]
+      }
+    },
+    "/api/v1/friends/readyz": {
+      "get": {
+        "summary": "Readyz - liveness-проба Kubernetes",
+        "operationId": "FriendsService_Readyz",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apifriends_serviceReadyzResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "FriendsService"
+        ]
+      }
+    },
+    "/api/v1/friends/remove_friend": {
+      "post": {
+        "summary": "Remove - убрать пользователя из друзей",
+        "operationId": "FriendsService_Remove",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/friends_serviceRemoveFriendResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/friends_serviceRemoveFriendRequest"
+            }
+          }
+        ],
+        "tags": [
+          "FriendsService"
+        ]
+      }
+    },
+    "/api/v1/users/healthz": {
+      "get": {
+        "summary": "Healthz - liveness-проба Kubernetes",
+        "operationId": "UsersService_Healthz",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiusers_serviceHealthzResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "UsersService"
+        ]
+      }
+    },
+    "/api/v1/users/login_email": {
+      "post": {
+        "summary": "SignInUser - вход/авторизация (по почте и паролю)",
+        "operationId": "UsersService_SignInUserEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/users_serviceSignInUserPostResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/users_serviceSignInUserPostRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UsersService"
+        ]
+      }
+    },
+    "/api/v1/users/login_oauth": {
+      "post": {
+        "summary": "SignInUserOauth - вход/авторизация (Oauth), регистрация если нет такого пользователя",
+        "operationId": "UsersService_SignInUserOauth",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/users_serviceSignInUserOauthResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/users_serviceSignInUserOauthRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UsersService"
+        ]
+      }
+    },
+    "/api/v1/users/readyz": {
+      "get": {
+        "summary": "Readyz - liveness-проба Kubernetes",
+        "operationId": "UsersService_Readyz",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiusers_serviceReadyzResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "UsersService"
+        ]
+      }
+    },
+    "/api/v1/users/register": {
+      "post": {
+        "summary": "SignUpUser - регистрация пользователя (по почте и паролю)",
+        "operationId": "UsersService_SignUpUserEmail",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/users_serviceSignUpUserEmailResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/users_serviceSignUpUserEmailRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UsersService"
+        ]
+      }
+    },
+    "/api/v1/users/search_by_nickname": {
+      "get": {
+        "summary": "SearchByNickname- поиск пользователей по никнейму",
+        "operationId": "UsersService_SearchByNickname",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/users_serviceSearchByNicknameResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "nick_name",
+            "description": "никнейм - уникальный",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "UsersService"
+        ]
+      }
+    },
+    "/api/v1/users/update_profile": {
+      "post": {
+        "summary": "UpdateProfile - редактирование профиля пользователя (никнейм - уникальный, информация о себе, аватарка)",
+        "operationId": "UsersService_UpdateProfile",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/users_serviceUpdateProfileResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/users_serviceUpdateProfileRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UsersService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "apichat_serviceHealthzResponse": {
+      "type": "object",
+      "title": "HealthzResponse"
+    },
+    "apichat_serviceReadyzResponse": {
+      "type": "object",
+      "title": "ReadyzResponse"
+    },
+    "apifriends_serviceHealthzResponse": {
+      "type": "object",
+      "title": "HealthzResponse"
+    },
+    "apifriends_serviceReadyzResponse": {
+      "type": "object",
+      "title": "ReadyzResponse"
+    },
+    "apiusers_serviceHealthzResponse": {
+      "type": "object",
+      "title": "HealthzResponse"
+    },
+    "apiusers_serviceReadyzResponse": {
+      "type": "object",
+      "title": "ReadyzResponse"
+    },
+    "chat_serviceGetMessageChatResponse": {
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/chat_serviceOneMessages"
+          },
+          "title": "Список сообщений",
+          "readOnly": true
+        }
+      },
+      "title": "GetMessageChatResponse -ответ cписок сообщений"
+    },
+    "chat_serviceOneMessages": {
+      "type": "object",
+      "properties": {
+        "nick_name": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string",
+          "readOnly": true
+        },
+        "position": {
+          "type": "string",
+          "format": "uint64",
+          "title": "номер последнего сообщения",
+          "readOnly": true
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Время сообщения",
+          "readOnly": true
+        }
+      },
+      "title": "Сообщение в чате",
+      "required": [
+        "nick_name"
+      ]
+    },
+    "chat_serviceWriteFriendRequest": {
+      "type": "object",
+      "properties": {
+        "nick_name": {
+          "type": "string",
+          "title": "никнейм - уникальный"
+        },
+        "nick_name_friend": {
+          "type": "string",
+          "title": "никнейм друга - уникальный"
+        },
+        "message": {
+          "type": "string",
+          "title": "сообщение"
+        }
+      },
+      "title": "WriteFriendRequest - запрос написать сообщение другу",
+      "required": [
+        "nick_name",
+        "nick_name_friend",
+        "message"
+      ]
+    },
+    "chat_serviceWriteFriendResponse": {
+      "type": "object",
+      "properties": {
+        "position": {
+          "type": "string",
+          "format": "uint64",
+          "title": "номер сообщения",
+          "readOnly": true
+        }
+      },
+      "title": "WriteFriendResponse - ответ"
+    },
+    "friends_serviceAddFriendRequest": {
+      "type": "object",
+      "properties": {
+        "nick_name": {
+          "type": "string",
+          "title": "никнейм - уникальный"
+        }
+      },
+      "title": "AddFriendRequest - запрос на добавить пользователя в друзья",
+      "required": [
+        "nick_name"
+      ]
+    },
+    "friends_serviceAddFriendResponse": {
+      "type": "object",
+      "title": "AddFriendResponse - ответ"
+    },
+    "friends_serviceConfirmRequest": {
+      "type": "object",
+      "properties": {
+        "Confirm": {
+          "type": "boolean",
+          "title": "true - подтвердить, false - отклонить"
+        }
+      },
+      "title": "ConfirmRequest -запрос подтвердить или отклонить запрос на дружбу"
+    },
+    "friends_serviceConfirmResponse": {
+      "type": "object",
+      "title": "ConfirmResponse - ответ"
+    },
+    "friends_serviceGetListResponse": {
+      "type": "object",
+      "properties": {
+        "confirmed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "список подтвердивших",
+          "readOnly": true
+        },
+        "not_confirmed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "список не подтвердивших",
+          "readOnly": true
+        }
+      },
+      "title": "GetListResponse ответ просмотр списка своих друзей (подтвердивших и не подтвердивших еще)"
+    },
+    "friends_serviceRemoveFriendRequest": {
+      "type": "object",
+      "properties": {
+        "nick_name": {
+          "type": "string",
+          "title": "никнейм - уникальный"
+        }
+      },
+      "title": "RemoveFriendRequest -запрос убрать пользователя из друзей",
+      "required": [
+        "nick_name"
+      ]
+    },
+    "friends_serviceRemoveFriendResponse": {
+      "type": "object",
+      "title": "RemoveFriendResponse - ответ"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "rpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "users_serviceSearchByNicknameResponse": {
+      "type": "object",
+      "properties": {
+        "order_id": {
+          "type": "string",
+          "format": "uuid",
+          "example": "2438ac3c-37eb-4902-adef-ed16b4431030",
+          "description": "id юзера",
+          "title": "user_id",
+          "readOnly": true,
+          "pattern": "^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
+        },
+        "nick_name": {
+          "type": "string",
+          "title": "никнейм - уникальный",
+          "readOnly": true
+        },
+        "description": {
+          "type": "string",
+          "title": "информация о себе",
+          "readOnly": true
+        },
+        "avatar": {
+          "type": "string",
+          "title": "аватарка",
+          "readOnly": true
+        },
+        "email": {
+          "type": "string",
+          "readOnly": true
+        },
+        "password_hash": {
+          "type": "string",
+          "readOnly": true
+        },
+        "provider": {
+          "type": "string",
+          "title": "Role  string\nVerified  bool",
+          "readOnly": true
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time",
+          "readOnly": true
+        }
+      },
+      "title": "ответ SearchByNickname- поиск пользователей по никнейму"
+    },
+    "users_serviceSignInUserOauthRequest": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "title": "SignInUserOauthRequest - вход/авторизация (Oauth)"
+    },
+    "users_serviceSignInUserOauthResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "readOnly": true
+        }
+      },
+      "title": "SignInUserOauthResponse"
+    },
+    "users_serviceSignInUserPostRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "title": "SignInUserPostRequest - вход/авторизация (по почте и паролю)"
+    },
+    "users_serviceSignInUserPostResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string",
+          "readOnly": true
+        }
+      },
+      "title": "SignInUserPostResponse"
+    },
+    "users_serviceSignUpUserEmailRequest": {
+      "type": "object",
+      "properties": {
+        "nick_name": {
+          "type": "string",
+          "title": "никнейм - уникальный"
+        },
+        "description": {
+          "type": "string",
+          "title": "информация о себе"
+        },
+        "avatar": {
+          "type": "string",
+          "title": "аватарка"
+        },
+        "email": {
+          "type": "string"
+        },
+        "password_hash": {
+          "type": "string",
+          "title": "Role  string\nVerified  bool\nstring Provider = 7"
+        }
+      },
+      "title": "SignUpUserEmailRequest - запрос регистрации с почтой и паролем SignUpUserEmail(",
+      "required": [
+        "nick_name",
+        "description",
+        "email",
+        "password_hash"
+      ]
+    },
+    "users_serviceSignUpUserEmailResponse": {
+      "type": "object",
+      "title": "Ответ регистрации"
+    },
+    "users_serviceUpdateProfileRequest": {
+      "type": "object",
+      "properties": {
+        "nick_name": {
+          "type": "string",
+          "title": "никнейм - уникальный"
+        },
+        "description": {
+          "type": "string",
+          "title": "информация о себе"
+        },
+        "avatar": {
+          "type": "string",
+          "title": "аватарка"
+        }
+      },
+      "title": "UpdateProfile - редактирование профиля пользователя (никнейм - уникальный, информация о себе, аватарка)",
+      "required": [
+        "nick_name",
+        "description"
+      ]
+    },
+    "users_serviceUpdateProfileResponse": {
+      "type": "object"
+    }
+  },
+  "externalDocs": {
+    "description": "More about gRPC-Gateway",
+    "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+  }
+}

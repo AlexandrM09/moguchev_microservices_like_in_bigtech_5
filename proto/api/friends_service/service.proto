@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package api.friends_service;
+
+import "api/friends_service/messages.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/pkg/api/friends_service;friends_service";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Friends Service"
+    version: "1.0"
+    contact: {
+      name: "gRPC-Gateway project"
+      url: "https://github.com/grpc-ecosystem/grpc-gateway"
+      email: "none@example.com"
+    }
+    license: {
+      name: "BSD 3-Clause License"
+      url: "https://github.com/grpc-ecosystem/grpc-gateway/blob/main/LICENSE"
+    }
+  }
+  external_docs: {
+    url: "https://github.com/grpc-ecosystem/grpc-gateway"
+    description: "More about gRPC-Gateway"
+  }
+  schemes: HTTP
+  schemes: HTTPS
+};
+
+// FriendsService - серивис отвечающий за друзей
+service FriendsService {
+  //Healthz - liveness-проба Kubernetes
+  rpc Healthz(HealthzRequest) returns (HealthzResponse) {
+    option (google.api.http) = {get: "/api/v1/friends/healthz"};
+  }
+  //Readyz - liveness-проба Kubernetes
+  rpc Readyz(ReadyzRequest) returns (ReadyzResponse) {
+    option (google.api.http) = {get: "/api/v1/friends/readyz"};
+  }
+  //Add - Добавить пользователя в друзья
+  rpc Add(AddFriendRequest) returns (AddFriendResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/friends/add_friend"
+      body: "*"
+    };
+  }
+  //Remove - убрать пользователя из друзей
+  rpc Remove(RemoveFriendRequest) returns (RemoveFriendResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/friends/remove_friend"
+      body: "*"
+    };
+  }
+  //Confirm - Подтвердить или отклонить запрос на дружбу
+  rpc Confirm(ConfirmRequest) returns (ConfirmResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/friends/confirm"
+      body: "*"
+    };
+  }
+  //GetList - Просмотр списка своих друзей (подтвердивших и не подтвердивших еще)
+  rpc GetList(GetListRequest) returns (GetListResponse) {
+    option (google.api.http) = {get: "/api/v1/friends/get_list"};
+  }
+}

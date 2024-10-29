@@ -1,0 +1,169 @@
+syntax = "proto3";
+
+package api.users_service;
+
+import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/pkg/api/users_service;users_service";
+
+//HealthzRequest
+message HealthzRequest {}
+
+//HealthzResponse
+message HealthzResponse {}
+
+//ReadyzRequest
+message ReadyzRequest {}
+
+//ReadyzResponse
+message ReadyzResponse {}
+
+//SignUpUserEmailRequest - запрос регистрации с почтой и паролем SignUpUserEmail(
+message SignUpUserEmailRequest {
+  //никнейм - уникальный
+  string Nickname = 1 [
+    json_name = "nick_name",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+  //информация о себе
+  string Description = 2 [
+    json_name = "description",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 10
+  ];
+  //аватарка
+  string Avatar = 3 [json_name = "avatar" /* (google.api.field_behavior) = OUTPUT_ONLY */ /* (google.api.field_behavior) = REQUIRED */];
+
+  string Email = 4 [
+    json_name = "email",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 4
+  ];
+  string Password = 5 [
+    json_name = "password_hash",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 8
+  ];
+  //Role  string
+  //Verified  bool
+  //string Provider = 7
+}
+
+//Ответ регистрации
+message SignUpUserEmailResponse {}
+
+//SignInUserPostRequest - вход/авторизация (по почте и паролю)
+message SignInUserPostRequest {
+  string email = 1;
+  string password = 2;
+}
+
+//SignInUserPostResponse
+message SignInUserPostResponse {
+  string token = 1 [
+    json_name = "token",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}
+
+//SignInUserOauthRequest - вход/авторизация (Oauth)
+message SignInUserOauthRequest {
+  string code = 1;
+  string state = 2;
+}
+
+//SignInUserOauthResponse
+message SignInUserOauthResponse {
+  string token = 1 [
+    json_name = "token",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}
+
+//UpdateProfile - редактирование профиля пользователя (никнейм - уникальный, информация о себе, аватарка)
+message UpdateProfileRequest {
+  //никнейм - уникальный
+  string Nickname = 1 [
+    json_name = "nick_name",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+  //информация о себе
+  string Description = 2 [
+    json_name = "description",
+    (google.api.field_behavior) = REQUIRED
+  ];
+  //аватарка
+  string Avatar = 3 [json_name = "avatar" /* (google.api.field_behavior) = REQUIRED */];
+}
+message UpdateProfileResponse {}
+
+//запрос в SearchByNickname- поиск пользователей по никнейму
+message SearchByNicknameRequest {
+  //никнейм - уникальный
+  string Nickname = 1 [
+    json_name = "nick_name",
+    (google.api.field_behavior) = REQUIRED,
+    (buf.validate.field).string.min_len = 5
+  ];
+}
+
+//ответ SearchByNickname- поиск пользователей по никнейму
+message SearchByNicknameResponse {
+  //Id пользователя
+  string user_id = 1 [
+    json_name = "order_id",
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_field) = {
+      pattern: "^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$"
+      title: "user_id"
+      description: "id юзера"
+      format: "uuid"
+      example: "\"2438ac3c-37eb-4902-adef-ed16b4431030\""
+    }
+  ];
+  //никнейм - уникальный
+  string Nickname = 2 [
+    json_name = "nick_name",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+  //информация о себе
+  string Description = 3 [
+    json_name = "description",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+  //аватарка
+  string Avatar = 4 [
+    json_name = "avatar",
+    (google.api.field_behavior) = OUTPUT_ONLY
+    //(google.api.field_behavior) = REQUIRED
+  ];
+
+  string Email = 5 [
+    json_name = "email",
+    (google.api.field_behavior) = OUTPUT_ONLY,
+    (buf.validate.field).string.min_len = 4
+  ];
+  string PasswordHash = 6 [
+    json_name = "password_hash",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+  //Role  string
+  //Verified  bool
+  string Provider = 7 [
+    json_name = "provider",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+  google.protobuf.Timestamp CreatedAt = 8 [
+    json_name = "created_at",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+  google.protobuf.Timestamp UpdatedAt = 9 [
+    json_name = "updated_at",
+    (google.api.field_behavior) = OUTPUT_ONLY
+  ];
+}
