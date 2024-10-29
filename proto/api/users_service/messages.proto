@@ -63,12 +63,12 @@ message SignInUserPostRequest {
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).string.min_len = 5
   ];
-  string Email = 2[
+  string Email = 2 [
     json_name = "email",
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).string.min_len = 4
   ];
-  string Password = 3[
+  string Password = 3 [
     json_name = "password",
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).string.min_len = 8
@@ -85,12 +85,12 @@ message SignInUserPostResponse {
 
 //SignInUserOauthRequest - вход/авторизация (Oauth)
 message SignInUserOauthRequest {
-  string Code = 1[
+  string Code = 1 [
     json_name = "code",
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).string.min_len = 1
   ];
-  string State = 2[
+  string State = 2 [
     json_name = "state",
     (google.api.field_behavior) = REQUIRED,
     (buf.validate.field).string.min_len = 1

@@ -775,7 +775,7 @@
     "users_serviceSearchByNicknameResponse": {
       "type": "object",
       "properties": {
-        "order_id": {
+        "user_id": {
           "type": "string",
           "format": "uuid",
           "example": "2438ac3c-37eb-4902-adef-ed16b4431030",
@@ -801,15 +801,12 @@
         },
         "email": {
           "type": "string",
-          "readOnly": true
-        },
-        "password_hash": {
-          "type": "string",
+          "title": "Email",
           "readOnly": true
         },
         "provider": {
           "type": "string",
-          "title": "Role  string\nVerified  bool",
+          "title": "Role  string\nVerified  bool\nProvider",
           "readOnly": true
         },
         "created_at": {
@@ -835,7 +832,11 @@
           "type": "string"
         }
       },
-      "title": "SignInUserOauthRequest - вход/авторизация (Oauth)"
+      "title": "SignInUserOauthRequest - вход/авторизация (Oauth)",
+      "required": [
+        "code",
+        "state"
+      ]
     },
     "users_serviceSignInUserOauthResponse": {
       "type": "object",
@@ -850,6 +851,10 @@
     "users_serviceSignInUserPostRequest": {
       "type": "object",
       "properties": {
+        "nick_name": {
+          "type": "string",
+          "title": "никнейм - уникальный"
+        },
         "email": {
           "type": "string"
         },
@@ -857,7 +862,12 @@
           "type": "string"
         }
       },
-      "title": "SignInUserPostRequest - вход/авторизация (по почте и паролю)"
+      "title": "SignInUserPostRequest - вход/авторизация (по почте и паролю)",
+      "required": [
+        "nick_name",
+        "email",
+        "password"
+      ]
     },
     "users_serviceSignInUserPostResponse": {
       "type": "object",
@@ -887,9 +897,9 @@
         "email": {
           "type": "string"
         },
-        "password_hash": {
+        "password": {
           "type": "string",
-          "title": "Role  string\nVerified  bool\nstring Provider = 7"
+          "title": "Role  string\nVerified  bool"
         }
       },
       "title": "SignUpUserEmailRequest - запрос регистрации с почтой и паролем SignUpUserEmail(",
@@ -897,7 +907,7 @@
         "nick_name",
         "description",
         "email",
-        "password_hash"
+        "password"
       ]
     },
     "users_serviceSignUpUserEmailResponse": {

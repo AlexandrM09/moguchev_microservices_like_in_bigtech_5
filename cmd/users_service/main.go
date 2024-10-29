@@ -10,39 +10,30 @@ import (
 
 	"github.com/bufbuild/protovalidate-go"
 	"google.golang.org/grpc"
+	repo "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/internal/users_service/repositories/inmemory"
+	uc "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/internal/users_service/usecases"
 )
 
 func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// =========================
-	// adapters
-	// =========================
-
-	// repository
-
-	//ordersRepo := orders_repository.NewRepository(1000)
-
-	// services
-
-	//wmsAdapter := warehouse_management_system.NewClient()
+	usersRepo := repo.NewRepository(1000)
 
 	// =========================
 	// usecases
 	// =========================
 
-	//ordersUsecase := orders.NewUsecase(orders.Deps{
-	//	WMS:              wmsAdapter,
-	//	OrdersRepository: ordersRepo,
-	//})
+	usersUsecase := uc.NewUsecase(uc.Deps{
+		UsersRepository: usersRepo,
+	})
 
 	// =========================
 	// delivery
 	// =========================
 
 	// controller
-	friendsController := controllers.New(controllers.Deps{})
+	friendsController := controllers.New(controllers.Deps{UsersUsecase: usersUsecase})
 
 	// middlewares
 

@@ -20,7 +20,7 @@ type Usecase interface {
 type (
 	// Users - port (вторичный)
 	UsersSystem interface {
-		Check(ctx context.Context, Nickname string) error
+		Check(ctx context.Context, nickname string) error
 	}
 
 	// ChatRepository - port (вторичный)
