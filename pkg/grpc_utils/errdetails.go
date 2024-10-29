@@ -14,10 +14,10 @@ func convertProtovalidateValidationErrorToErrdetailsBadRequest(valErr *protovali
 
 func protovalidateVialationsToGoogleViolations(vs []*validate.Violation) []*errdetails.BadRequest_FieldViolation {
 	res := make([]*errdetails.BadRequest_FieldViolation, len(vs))
-	for i, _ := range vs {
+	for i, v := range vs {
 		res[i] = &errdetails.BadRequest_FieldViolation{
-			//Field:       v.FieldPath,
-			//Description: v.Message,
+			Field:       *v.FieldPath,
+			Description: *v.Message,
 		}
 	}
 	return res

@@ -1,3 +1,7 @@
 .idea
 vendor.protobuf
 *.exe
+.DS_Store
+/bin
+.vscode
+.vscode/settings.json

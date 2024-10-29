@@ -2,13 +2,18 @@ package main
 
 import (
 	"context"
-	"github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/pkg/middleware/grpc"
 	"log"
 
+	adapter "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/internal/chat_service/adapters/user_check"
 	controllers "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/internal/chat_service/controller"
+	repo "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/internal/chat_service/repositories/inmemory"
 	"github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/internal/chat_service/server"
+	uc "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/internal/chat_service/usecases"
+	usersClient "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/pkg/api/users_service"
+	middleware_grpc "github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/pkg/middleware/grpc"
 	"github.com/bufbuild/protovalidate-go"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func main() {
@@ -17,31 +22,35 @@ func main() {
 
 	// =========================
 	// adapters
+	//todo вынести в переменные окружения
+	conn, err := grpc.NewClient("localhost:8082",grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Fatal(err)
+	}
+	//todo add client interceptor to auth
+	usersAdapter := adapter.NewClient(
+		usersClient.NewUsersServiceClient(conn),
+	)
 	// =========================
-
 	// repository
 
-	//ordersRepo := orders_repository.NewRepository(1000)
-
-	// services
-
-	//wmsAdapter := warehouse_management_system.NewClient()
+	chatRepo := repo.NewRepository(1000)
 
 	// =========================
 	// usecases
 	// =========================
 
-	//ordersUsecase := orders.NewUsecase(orders.Deps{
-	//	WMS:              wmsAdapter,
-	//	OrdersRepository: ordersRepo,
-	//})
+	chatUsecase := uc.NewUsecase(uc.Deps{
+		Users:          usersAdapter,
+		ChatRepository: chatRepo,
+	})
 
 	// =========================
 	// delivery
 	// =========================
 
 	// controller
-	chatController := controllers.New(controllers.Deps{})
+	chatController := controllers.New(controllers.Deps{ChatUsecase: chatUsecase})
 
 	// middlewares
 
@@ -72,4 +81,5 @@ func main() {
 	if err = srv.Run(ctx); err != nil {
 		log.Fatalf("run: %v", err)
 	}
+	//todo gracefull shotdown
 }
