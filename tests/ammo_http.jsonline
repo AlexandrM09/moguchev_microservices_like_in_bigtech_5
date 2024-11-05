@@ -1,0 +1,1 @@
+{"uri": "/api/v1/orders", "method": "POST", "headers": {"Accept": "*/*", "Accept-Encoding": "gzip, deflate", "User-Agent": "Pandora"}, "host": "localhost:8080", "payload": {"delivery_info": { "delivery_date": "2024-10-22T18:00:00.000Z", "delivery_variant_id": "71043701"},"items": [{"id": "3","quantity": 538356536,"warehouse_id": "13456"}],"user_id": "39"}}
