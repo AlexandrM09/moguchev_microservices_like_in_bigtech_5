@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/AlexandrM09/moguchev_microservices_like_in_bigtech_5/pkg/postgres"
+	"lesson_08/orders_management_system/pkg/postgres"
 
 	"github.com/jackc/pgx/v5"
 )

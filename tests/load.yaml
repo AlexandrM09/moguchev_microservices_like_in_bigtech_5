@@ -1,0 +1,54 @@
+pandora:
+  enabled: true
+  package: yandextank.plugins.Pandora
+  config_content:
+    pools:
+      # - id: gRPC
+      #       gun:
+      #         type: grpc
+      #         target: 127.0.0.1:8092
+      - id: HTTP pool
+        gun:
+          type: http
+          target: localhost:8080
+          dial:
+            timeout: 5s
+        ammo:
+          type: http/json
+          file: ./ammo_http.jsonline
+        # phout report format is compatible for Yandex Tank.
+        result:
+          type: phout
+          destination: ./tests/phout.log
+        rps:
+          type: line
+          from: 1
+          to: 100
+          duration: 30s
+        # Startup scheduler controls the level of parallelism: start 100 instances.
+        startup:
+          type: once
+          times: 100
+    log:
+      level: debug
+
+overload:
+  enabled: true
+  package: yandextank.plugins.DataUploader
+  token_file: overload-token.txt
+
+# Disable phantom which is the default load generator.
+phantom:
+  enabled: false
+
+# Disable metrics collection through SSH connection.
+telegraf:
+  enabled: false
+
+# The default path /var/lock might not exist.
+core:
+  lock_dir: /tmp/
+
+# Disable resource checker due to "No disk usage info: df: illegal option" error on macOS.
+rcheck:
+  enabled: false
